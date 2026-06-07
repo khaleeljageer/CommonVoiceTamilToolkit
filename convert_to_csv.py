@@ -33,7 +33,7 @@ for index, file_path in enumerate(txt_files, start=1):
             writer.writerow(["Line Number", "Sentence"])
 
             for line_num, line in enumerate(txt_f, start=1):
-                writer.writerow([line_num, line.strip()])
+                writer.writerow([line_num, line.strip(), False])
 
         print(f"Saved: {csv_file}")
 
