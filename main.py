@@ -2,6 +2,23 @@ import re
 import os
 from pathlib import Path
 
+def is_invalid_sentence(m_text: str) -> bool:
+    l_text = m_text.strip()
+
+    if not l_text:
+        return True
+
+    # Single token (word, number, punctuation, etc.)
+    if len(l_text.split()) == 1:
+        return True
+
+    # Only special characters/punctuation
+    if re.fullmatch(r"[^\w\s]+", l_text, flags=re.UNICODE):
+        return True
+
+    return False
+
+
 # Input directory containing .txt files
 input_dir = "/run/media/asuran/Khaleel_SSD/CommonVoice/thamizh_mann/data"
 
@@ -62,7 +79,13 @@ for input_file in txt_files:
 
         # Write output
         with open(output_file, "w", encoding="utf-8") as f:
-            for sentence in filtered_sentences:
+            for line in filtered_sentences:
+                sentence = line.strip()
+                if is_invalid_sentence(sentence):
+                    print(
+                        f"Skipping : '{sentence}'"
+                    )
+                    continue
                 f.write(sentence + "\n")
 
         print(f"Processed: {input_file.name}")
